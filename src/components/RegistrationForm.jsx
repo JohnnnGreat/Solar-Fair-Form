@@ -119,7 +119,7 @@ export default function RegistrationForm() {
   const genderOptions = ["Male", "Female", "Prefer not to say"];
 
   return (
-    <Card className=" border shadow-none w-[800px]! ">
+    <Card className=" border shadow-none md:w-[800px]! ">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">Solar Fair Registration</CardTitle>
         <CardDescription className="text-center">
