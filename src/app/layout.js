@@ -18,14 +18,9 @@ export default function RootLayout({ children }) {
         <div className="relative flex min-h-screen flex-col">
           {/* Modern Header/Navbar */}
           <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="max-w-[1000px] flex h-14 mx-auto items-center">
+            <div className="max-w-[1000px] flex  mx-auto items-center">
               <div className="flex items-center gap-2 mr-4">
-                <Sun className="h-6 w-6 text-amber-500" />
-                <Link href="/" className="flex items-center space-x-2">
-                  <span className="hidden font-bold sm:inline-block">
-                    Solar<span className="text-amber-500">Fair</span>
-                  </span>
-                </Link>
+                <img src="logo.png" className="w-[140px]" />
               </div>
             </div>
           </header>
