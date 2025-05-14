@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 container max-w-6xl py-10 px-4">{children}</main>
+          <main className="flex-1 mx-auto max-w-[1000px] py-10 px-4">{children}</main>
 
           {/* Modern Footer */}
           <footer className="border-t bg-muted/50">
