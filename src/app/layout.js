@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
           <main className="flex-1 mx-auto max-w-[1000px] py-10 px-4">{children}</main>
 
           {/* Modern Footer */}
-          <footer className="border-t bg-muted/50">
+          <footer className="border-t bg-white">
             <div className="mx-auto max-w-[1000px] py-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-3">
