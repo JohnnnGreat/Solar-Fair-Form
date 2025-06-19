@@ -20,9 +20,11 @@ export default function RootLayout({ children }) {
           <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="max-w-[1000px] flex  mx-auto items-center">
               <div className="flex items-center gap-2 mr-4">
-                <img src="logo.png" className="w-[140px]" />
+                <img src="logo.png" className="w-[100px]" />
+                <img src="logo2.jpg" className="w-[100px]" />
               </div>
             </div>
+            
           </header>
 
           {/* Main Content */}
@@ -33,14 +35,7 @@ export default function RootLayout({ children }) {
             <div className="mx-auto max-w-[1000px] py-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Sun className="h-6 w-6 text-amber-500" />
-                    <h3 className="font-bold">SolarFair</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Connecting solar energy providers with businesses and consumers through
-                    innovative events.
-                  </p>
+                 <img src="logo3.jpg" className="w-[100px]" />
                 </div>
               </div>
             </div>
