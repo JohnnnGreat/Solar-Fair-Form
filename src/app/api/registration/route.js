@@ -4,10 +4,18 @@ import connectDB from "@/lib/mongodb";
 
 export async function POST(request) {
    try {
-      await connectDB();
       const body = await request.json();
-      const registration = await Registration.create(body);
-      return NextResponse.json({ registration }, { status: 201 });
+
+      console.log(body);
+      await connectDB();
+
+      const newRegistration = new Registration(body);
+      await newRegistration.save();
+
+      return NextResponse.json(
+         { message: "Registration successful", registration: newRegistration },
+         { status: 201 },
+      );
    } catch (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
    }
