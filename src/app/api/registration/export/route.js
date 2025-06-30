@@ -1,54 +1,44 @@
 import { NextResponse } from "next/server";
 import Registration from "@/models/Registration";
 import connectDB from "@/lib/mongodb";
+import * as XLSX from "xlsx";
 
 export async function GET() {
-  try {
-    await connectDB();
-    const registrations = await Registration.find({}).sort({ createdAt: -1 });
+   try {
+      await connectDB();
+      const registrations = await Registration.find({}).sort({ createdAt: -1 });
 
-    // Convert to CSV format
-    const headers = [
-      "Organisation Name",
-      "Email",
-      "Phone",
-      "First Name",
-      "Last Name",
-      "Gender",
-      "Categorisation",
-      "Registered on Solar Marketplace",
-      "Interests",
-      "Permission for Future Events",
-      "Created At",
-    ];
+      // Prepare data for Excel
+      const data = registrations.map((registration) => ({
+         "Organisation Name": registration.organisationName,
+         Email: registration.email,
+         Phone: registration.phone || "",
+         "First Name": registration.firstName,
+         "Last Name": registration.lastName,
+         Gender: registration.gender || "",
+         Category: registration.categorisation,
+         Marketplace: registration.registeredOnMarketplace ? "Yes" : "No",
+         Interests: registration.interests || "",
+         "Future Events Permission": registration.permissionForFutureEvents ? "Yes" : "No",
+         "Registration Date": new Date(registration.createdAt).toLocaleString(),
+      }));
 
-    const rows = registrations.map((registration) => [
-      registration.organisationName,
-      registration.email,
-      registration.phone || "",
-      registration.firstName,
-      registration.lastName,
-      registration.gender || "",
-      registration.categorisation,
-      registration.registeredOnMarketplace ? "Yes" : "No",
-      registration.interests || "",
-      registration.permissionForFutureEvents ? "Yes" : "No",
-      new Date(registration.createdAt).toLocaleString(),
-    ]);
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
 
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(",")),
-    ].join("\n");
+      // Generate Excel file buffer
+      const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
 
-    return new NextResponse(csvContent, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/csv",
-        "Content-Disposition": "attachment; filename=registrations.csv",
-      },
-    });
-  } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+      return new NextResponse(buffer, {
+         status: 200,
+         headers: {
+            "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "Content-Disposition": "attachment; filename=registrations.xlsx",
+         },
+      });
+   } catch (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+   }
 }
