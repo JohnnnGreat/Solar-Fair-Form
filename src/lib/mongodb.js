@@ -1,34 +1,37 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI =
-  "mongodb+srv://johnossai20:ln9nyAjqMA8BPPCn@cluster0.xhamnzk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const MONGODB_URI =
+//   "mongodb+srv://johnossai20:ln9nyAjqMA8BPPCn@cluster0.xhamnzk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+export const MONGODB_URI =
+   "mongodb+srv://johnossai20:JohnOssai@cluster0.lopkml3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
+   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+   cached = global.mongoose = { conn: null, promise: null };
 }
 
 async function connectDB() {
-  if (cached.conn) {
-    return cached.conn;
-  }
+   if (cached.conn) {
+      return cached.conn;
+   }
 
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
+   if (!cached.promise) {
+      const opts = {
+         bufferCommands: false,
+      };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
-  }
-  cached.conn = await cached.promise;
-  return cached.conn;
+      cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+         return mongoose;
+      });
+   }
+   cached.conn = await cached.promise;
+   return cached.conn;
 }
 
 export default connectDB;

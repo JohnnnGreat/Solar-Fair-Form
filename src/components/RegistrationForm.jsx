@@ -1,38 +1,11 @@
 "use client";
 
-import {
-   Card,
-   CardContent,
-   CardDescription,
-   CardFooter,
-   CardHeader,
-   CardTitle,
-} from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from "@/components/ui/select";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Loader2, Building2, User, FileText } from "lucide-react";
 
 export default function RegistrationForm() {
-   const router = useRouter();
    const [isSubmitting, setIsSubmitting] = useState(false);
 
-   // Using useState instead of react-hook-form since it's not available per the instructions
    const [formData, setFormData] = useState({
       organisationName: "",
       email: "",
@@ -40,8 +13,8 @@ export default function RegistrationForm() {
       firstName: "",
       lastName: "",
       gender: "",
+      age: "",
       categorisation: "",
-      registeredOnMarketplace: null,
       interests: "",
       permissionForFutureEvents: null,
    });
@@ -67,38 +40,18 @@ export default function RegistrationForm() {
 
    const validateForm = () => {
       const errors = [];
+      if (!formData.organisationName.trim()) errors.push("Organization Name is required");
+      if (!formData.categorisation) errors.push("Category is required");
 
-      if (!formData.organisationName.trim()) {
-         errors.push("Organization Name is required");
-      }
-      if (!formData.categorisation) {
-         errors.push("Category is required");
-      }
-      if (formData.registeredOnMarketplace === null) {
-         errors.push("Solar Marketplace registration status is required");
-      }
-      if (!formData.firstName.trim()) {
-         errors.push("First Name is required");
-      }
-      if (!formData.lastName.trim()) {
-         errors.push("Last Name is required");
-      }
-      if (!formData.email.trim()) {
-         errors.push("Email is required");
-      }
-      if (!formData.phone.trim()) {
-         errors.push("Phone is required");
-      }
-      if (!formData.gender) {
-         errors.push("Gender is required");
-      }
-      if (!formData.interests.trim()) {
-         errors.push("Interests field is required");
-      }
-      if (formData.permissionForFutureEvents === null) {
+      if (!formData.firstName.trim()) errors.push("First Name is required");
+      if (!formData.lastName.trim()) errors.push("Last Name is required");
+      if (!formData.email.trim()) errors.push("Email is required");
+      if (!formData.phone.trim()) errors.push("Phone is required");
+      if (!formData.gender) errors.push("Gender is required");
+      if (!formData.age) errors.push("Age is required");
+      if (!formData.interests.trim()) errors.push("Interests field is required");
+      if (formData.permissionForFutureEvents === null)
          errors.push("Permission for future events is required");
-      }
-
       return errors;
    };
 
@@ -106,35 +59,18 @@ export default function RegistrationForm() {
       e.preventDefault();
       setIsSubmitting(true);
 
-      // Validate all fields before submission
       const validationErrors = validateForm();
       if (validationErrors.length > 0) {
-         toast.error("Validation Error", {
-            description: `Please fill in all required fields: ${validationErrors.join(", ")}`,
-         });
+         alert(`Please fill in all required fields: ${validationErrors.join(", ")}`);
          setIsSubmitting(false);
          return;
       }
 
       try {
-         const response = await fetch("/api/registration", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-         });
+         // Simulate API call
+         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-         const data = await response.json();
-
-         if (!response.ok) {
-            throw new Error(data.error || "Something went wrong");
-         }
-
-         toast.success("Registration Successful!", {
-            description:
-               "Thank you for registering! Your registration has been submitted successfully.",
-         });
+         alert("Registration Successful! Thank you for registering!");
 
          setFormData({
             organisationName: "",
@@ -143,299 +79,335 @@ export default function RegistrationForm() {
             firstName: "",
             lastName: "",
             gender: "",
+            age: "",
             categorisation: "",
             registeredOnMarketplace: null,
             interests: "",
             permissionForFutureEvents: null,
          });
-
-         // Refresh the page after 2 seconds
-         setTimeout(() => {
-            router.refresh();
-         }, 2000);
       } catch (error) {
-         toast.error("Registration Failed", {
-            description: error.message,
-         });
+         alert("Registration Failed: " + error.message);
       } finally {
          setIsSubmitting(false);
       }
    };
 
-   // Categories array
    const categories = ["Customer", "Business", "Solar company", "Financiers", "Development Agency"];
-
-   // Gender options
    const genderOptions = ["Male", "Female", "Prefer not to say"];
+   const ageOptions = ["18 to 23", "24 to 35", "Above 35"];
 
    return (
-      <Card className=" border shadow-none md:w-[800px]! ">
-         <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">
-               Solar Fair Registration
-            </CardTitle>
-            <CardDescription className="text-center">
-               Complete the form below to register for our upcoming Solar Fair event
-            </CardDescription>
-         </CardHeader>
+      <div className="min-h-screen bg-gray-50 py-8 px-4">
+         <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="bg-white border border-gray-200 rounded-lg mb-8 p-8 text-center">
+               <h1 className="text-3xl font-semibold text-gray-900 mb-3">
+                  Virtual Power Plants Design Plan Workshop
+               </h1>
+               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                  Complete the registration form below to secure your spot at our upcoming Virtual
+                  Power Plants Design Plan Workshop
+               </p>
+            </div>
 
-         <CardContent>
-            <form
-               onSubmit={handleSubmit}
-               className="space-y-6"
-            >
-               {/* Organization Information */}
-               <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Organization Information</h3>
-                  <Separator />
-
-                  <div className="grid gap-4">
-                     <div className="grid gap-2">
-                        <Label htmlFor="organisationName">
-                           Organization Name <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                           id="organisationName"
-                           name="organisationName"
-                           value={formData.organisationName}
-                           onChange={(e) => handleChange("organisationName", e.target.value)}
-                           placeholder="Enter your organization name"
-                           required
-                        />
+            {/* Form */}
+            <div className="space-y-8">
+               {/* Organization Information Section */}
+               <div className="bg-white border border-gray-200 rounded-lg">
+                  <div className="border-b border-gray-200 px-6 py-4">
+                     <div className="flex items-center gap-3">
+                        <Building2 className="h-5 w-5 text-gray-600" />
+                        <h2 className="text-xl font-semibold text-gray-900">
+                           Organization Information
+                        </h2>
                      </div>
+                  </div>
 
-                     <div className="grid gap-2">
-                        <Label htmlFor="categorisation">
-                           Category <span className="text-red-500">*</span>
-                        </Label>
-                        <Select
-                           value={formData.categorisation}
-                           onValueChange={(value) => handleChange("categorisation", value)}
-                           required
-                        >
-                           <SelectTrigger id="categorisation">
-                              <SelectValue placeholder="Select your category" />
-                           </SelectTrigger>
-                           <SelectContent>
+                  <div className="p-6 space-y-6">
+                     <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                           <label
+                              htmlFor="organisationName"
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                           >
+                              Organization Name <span className="text-red-500">*</span>
+                           </label>
+                           <input
+                              id="organisationName"
+                              name="organisationName"
+                              type="text"
+                              value={formData.organisationName}
+                              onChange={(e) => handleChange("organisationName", e.target.value)}
+                              placeholder="Enter your organization name"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                              required
+                           />
+                        </div>
+
+                        <div>
+                           <label
+                              htmlFor="categorisation"
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                           >
+                              Category <span className="text-red-500">*</span>
+                           </label>
+                           <select
+                              id="categorisation"
+                              value={formData.categorisation}
+                              onChange={(e) => handleChange("categorisation", e.target.value)}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                              required
+                           >
+                              <option value="">Select your category</option>
                               {categories.map((category) => (
-                                 <SelectItem
+                                 <option
                                     key={category}
                                     value={category}
                                  >
                                     {category}
-                                 </SelectItem>
+                                 </option>
                               ))}
-                           </SelectContent>
-                        </Select>
-                     </div>
-
-                     <div className="grid gap-2">
-                        <Label
-                           htmlFor="registeredOnMarketplace"
-                           className="mb-1"
-                        >
-                           Are you registered on the Solar Marketplace?{" "}
-                           <span className="text-red-500">*</span>
-                        </Label>
-                        <RadioGroup
-                           value={
-                              formData.registeredOnMarketplace === null
-                                 ? ""
-                                 : formData.registeredOnMarketplace
-                                 ? "Yes"
-                                 : "No"
-                           }
-                           onValueChange={(value) => handleChange("registeredOnMarketplace", value)}
-                           className="flex space-x-4"
-                           required
-                        >
-                           <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                 value="Yes"
-                                 id="marketplace-yes"
-                              />
-                              <Label htmlFor="marketplace-yes">Yes</Label>
-                           </div>
-                           <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                 value="No"
-                                 id="marketplace-no"
-                              />
-                              <Label htmlFor="marketplace-no">No</Label>
-                           </div>
-                        </RadioGroup>
+                           </select>
+                        </div>
                      </div>
                   </div>
                </div>
 
-               {/* Personal Information */}
-               <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Personal Information</h3>
-                  <Separator />
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <div className="grid gap-2">
-                        <Label htmlFor="firstName">
-                           First Name <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                           id="firstName"
-                           name="firstName"
-                           value={formData.firstName}
-                           onChange={(e) => handleChange("firstName", e.target.value)}
-                           required
-                        />
-                     </div>
-
-                     <div className="grid gap-2">
-                        <Label htmlFor="lastName">
-                           Last Name <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                           id="lastName"
-                           name="lastName"
-                           value={formData.lastName}
-                           onChange={(e) => handleChange("lastName", e.target.value)}
-                           required
-                        />
+               {/* Personal Information Section */}
+               <div className="bg-white border border-gray-200 rounded-lg">
+                  <div className="border-b border-gray-200 px-6 py-4">
+                     <div className="flex items-center gap-3">
+                        <User className="h-5 w-5 text-gray-600" />
+                        <h2 className="text-xl font-semibold text-gray-900">
+                           Personal Information
+                        </h2>
                      </div>
                   </div>
 
-                  <div className="grid gap-4">
-                     <div className="grid gap-2">
-                        <Label htmlFor="email">
-                           Email <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                           type="email"
-                           id="email"
-                           name="email"
-                           value={formData.email}
-                           onChange={(e) => handleChange("email", e.target.value)}
-                           placeholder="you@example.com"
-                           required
-                        />
-                     </div>
-
-                     <div className="grid gap-2">
-                        <Label htmlFor="phone">
-                           Phone <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                           type="tel"
-                           id="phone"
-                           name="phone"
-                           value={formData.phone}
-                           onChange={(e) => handleChange("phone", e.target.value)}
-                           placeholder="Enter your phone number"
-                           required
-                        />
-                     </div>
-                  </div>
-
-                  <div className="grid gap-2">
-                     <Label>
-                        Gender <span className="text-red-500">*</span>
-                     </Label>
-                     <RadioGroup
-                        value={formData.gender}
-                        onValueChange={(value) => handleChange("gender", value)}
-                        required
-                        className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-4"
-                     >
-                        {genderOptions.map((option) => (
-                           <div
-                              key={option}
-                              className="flex items-center space-x-2"
+                  <div className="p-6 space-y-6">
+                     <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                           <label
+                              htmlFor="firstName"
+                              className="block text-sm font-medium text-gray-700 mb-2"
                            >
-                              <RadioGroupItem
-                                 value={option}
-                                 id={`gender-${option}`}
-                              />
-                              <Label htmlFor={`gender-${option}`}>{option}</Label>
+                              First Name <span className="text-red-500">*</span>
+                           </label>
+                           <input
+                              id="firstName"
+                              name="firstName"
+                              type="text"
+                              value={formData.firstName}
+                              onChange={(e) => handleChange("firstName", e.target.value)}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                              required
+                           />
+                        </div>
+
+                        <div>
+                           <label
+                              htmlFor="lastName"
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                           >
+                              Last Name <span className="text-red-500">*</span>
+                           </label>
+                           <input
+                              id="lastName"
+                              name="lastName"
+                              type="text"
+                              value={formData.lastName}
+                              onChange={(e) => handleChange("lastName", e.target.value)}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                              required
+                           />
+                        </div>
+                     </div>
+
+                     <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                           <label
+                              htmlFor="email"
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                           >
+                              Email Address <span className="text-red-500">*</span>
+                           </label>
+                           <input
+                              id="email"
+                              name="email"
+                              type="email"
+                              value={formData.email}
+                              onChange={(e) => handleChange("email", e.target.value)}
+                              placeholder="you@example.com"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                              required
+                           />
+                        </div>
+
+                        <div>
+                           <label
+                              htmlFor="phone"
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                           >
+                              Phone Number <span className="text-red-500">*</span>
+                           </label>
+                           <input
+                              id="phone"
+                              name="phone"
+                              type="tel"
+                              value={formData.phone}
+                              onChange={(e) => handleChange("phone", e.target.value)}
+                              placeholder="Enter your phone number"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                              required
+                           />
+                        </div>
+                     </div>
+
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                           Gender <span className="text-red-500">*</span>
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                           {genderOptions.map((option) => (
+                              <label
+                                 key={option}
+                                 className="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer"
+                              >
+                                 <input
+                                    type="radio"
+                                    name="gender"
+                                    value={option}
+                                    checked={formData.gender === option}
+                                    onChange={(e) => handleChange("gender", e.target.value)}
+                                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                    required
+                                 />
+                                 <span className="ml-3 text-sm text-gray-700">{option}</span>
+                              </label>
+                           ))}
+                        </div>
+                     </div>
+
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                           Age Range <span className="text-red-500">*</span>
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                           {ageOptions.map((option) => (
+                              <label
+                                 key={option}
+                                 className="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer"
+                              >
+                                 <input
+                                    type="radio"
+                                    name="age"
+                                    value={option}
+                                    checked={formData.age === option}
+                                    onChange={(e) => handleChange("age", e.target.value)}
+                                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                    required
+                                 />
+                                 <span className="ml-3 text-sm text-gray-700">{option}</span>
+                              </label>
+                           ))}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               {/* Additional Information Section */}
+               <div className="bg-white border border-gray-200 rounded-lg">
+                  <div className="border-b border-gray-200 px-6 py-4">
+                     <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-gray-600" />
+                        <h2 className="text-xl font-semibold text-gray-900">
+                           Additional Information
+                        </h2>
+                     </div>
+                  </div>
+
+                  <div className="p-6 space-y-6">
+                     <div>
+                        <label
+                           htmlFor="interests"
+                           className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                           What would you be interested in from the Solar Fair?{" "}
+                           <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                           id="interests"
+                           name="interests"
+                           value={formData.interests}
+                           onChange={(e) => handleChange("interests", e.target.value)}
+                           placeholder="Please share your interests or what you hope to get from the event..."
+                           rows={4}
+                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-vertical"
+                           required
+                        />
+                     </div>
+
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                           Permission to use this information for Future Events{" "}
+                           <span className="text-red-500">*</span>
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                           {["I accept", "I decline"].map((option) => (
+                              <label
+                                 key={option}
+                                 className="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer"
+                              >
+                                 <input
+                                    type="radio"
+                                    name="permissionForFutureEvents"
+                                    value={option}
+                                    checked={
+                                       formData.permissionForFutureEvents === null
+                                          ? false
+                                          : formData.permissionForFutureEvents
+                                          ? option === "I accept"
+                                          : option === "I decline"
+                                    }
+                                    onChange={(e) =>
+                                       handleChange("permissionForFutureEvents", e.target.value)
+                                    }
+                                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                    required
+                                 />
+                                 <span className="ml-3 text-sm text-gray-700">{option}</span>
+                              </label>
+                           ))}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               {/* Submit Button */}
+               <div className="bg-white border border-gray-200 rounded-lg p-6">
+                  <div className="text-center">
+                     <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                     >
+                        {isSubmitting ? (
+                           <div className="flex items-center justify-center">
+                              <Loader2 className="animate-spin -ml-1 mr-3 h-4 w-4" />
+                              Submitting Registration...
                            </div>
-                        ))}
-                     </RadioGroup>
+                        ) : (
+                           "Submit Registration"
+                        )}
+                     </button>
+
+                     <p className="mt-3 text-sm text-gray-500">
+                        All fields marked with <span className="text-red-500">*</span> are required
+                     </p>
                   </div>
                </div>
-
-               {/* Additional Information */}
-               <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Additional Information</h3>
-                  <Separator />
-
-                  <div className="grid gap-2">
-                     <Label htmlFor="interests">
-                        What would you be interested in from the Solar Fair?{" "}
-                        <span className="text-red-500">*</span>
-                     </Label>
-                     <Textarea
-                        id="interests"
-                        name="interests"
-                        value={formData.interests}
-                        onChange={(e) => handleChange("interests", e.target.value)}
-                        placeholder="Please share your interests or what you hope to get from the event..."
-                        className="min-h-[100px]"
-                        required
-                     />
-                  </div>
-
-                  <div className="grid gap-2">
-                     <Label
-                        htmlFor="permissionForFutureEvents"
-                        className="mb-1"
-                     >
-                        Permission to use this information for Future Events{" "}
-                        <span className="text-red-500">*</span>
-                     </Label>
-                     <RadioGroup
-                        value={
-                           formData.permissionForFutureEvents === null
-                              ? ""
-                              : formData.permissionForFutureEvents
-                              ? "I accept"
-                              : "I decline"
-                        }
-                        onValueChange={(value) => handleChange("permissionForFutureEvents", value)}
-                        className="flex space-x-4"
-                        required
-                     >
-                        <div className="flex items-center space-x-2">
-                           <RadioGroupItem
-                              value="I accept"
-                              id="permission-accept"
-                           />
-                           <Label htmlFor="permission-accept">I accept</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                           <RadioGroupItem
-                              value="I decline"
-                              id="permission-decline"
-                           />
-                           <Label htmlFor="permission-decline">I decline</Label>
-                        </div>
-                     </RadioGroup>
-                  </div>
-               </div>
-
-               <CardFooter className="flex justify-center px-0 pt-4">
-                  <Button
-                     type="submit"
-                     className="w-full sm:w-auto"
-                     disabled={isSubmitting}
-                  >
-                     {isSubmitting ? (
-                        <>
-                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                           Submitting...
-                        </>
-                     ) : (
-                        "Submit Registration"
-                     )}
-                  </Button>
-               </CardFooter>
-            </form>
-         </CardContent>
-      </Card>
+            </div>
+         </div>
+      </div>
    );
 }
