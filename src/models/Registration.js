@@ -24,15 +24,10 @@ const RegistrationSchema = new mongoose.Schema({
       type: String,
       enum: ["Male", "Female", "Prefer not to say"],
    },
-   age: {
-      type: String,
-      required: true,
-      enum: ["18 to 23", "24 to 35", "Above 35"],
-   },
    categorisation: {
       type: String,
       required: true,
-      enum: ["Customer", "Business", "Financiers", "Development Agency"],
+      enum: ["Customer", "Business", "Solar company", "Financiers", "Development Agency"],
    },
    registeredOnMarketplace: {
       type: Boolean,
@@ -51,4 +46,4 @@ const RegistrationSchema = new mongoose.Schema({
    },
 });
 
-export default mongoose.models.Form || mongoose.model("Form", RegistrationSchema);
+export default mongoose.models.Registration || mongoose.model("Registration", RegistrationSchema);

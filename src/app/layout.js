@@ -1,14 +1,15 @@
 import "./globals.css";
 
 import { Menu, Sun, UserCircle, X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Toaster } from "sonner";
 
 export const metadata = {
-   title: "Virtual Power Plant Plan",
-   description: "Registration form for Virtual Power Plant Plan",
+   title: "Solar Fair Registration",
+   description: "Registration form for Solar Fair events",
 };
 
 export default function RootLayout({ children }) {
@@ -19,40 +20,38 @@ export default function RootLayout({ children }) {
                position="top-center"
                richColors
             />
-
             <div className="relative flex min-h-screen flex-col">
-               {/* Header */}
+               {/* Modern Header/Navbar */}
                <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                  <div className="mx-auto flex h-16 max-w-[1000px] items-center px-4">
-                     <Link
-                        href="/"
-                        className="flex items-center gap-2"
-                     >
+                  <div className="max-w-[1000px] flex  mx-auto items-center">
+                     <div className="flex items-center gap-2 mr-4">
                         <img
-                           src="https://www.energymrc.ng/home/image001.png"
-                           alt="Energy MRC logo"
-                           className="w-[100px] h-[40px] object-contain"
+                           src="logo.png"
+                           className="w-[100px]"
                         />
-                     </Link>
+                        <img
+                           src="logo2.jpg"
+                           className="w-[100px]"
+                        />
+                     </div>
                   </div>
                </header>
 
-               {/* Main */}
-               <main className="mx-auto w-full max-w-[1000px] flex-1 px-4 py-10">{children}</main>
+               {/* Main Content */}
+               <main className="flex-1 mx-auto max-w-[1000px] py-10 px-4">{children}</main>
 
-               {/* Footer */}
+               {/* Modern Footer */}
                <footer className="border-t bg-white">
-                  {/* <div className="mx-auto max-w-[1000px] px-4 py-8">
-                     <div className="flex items-center justify-center md:justify-start">
-                        <Image
-                           src="/logo3.jpg"
-                           alt="Footer logo"
-                           width={100}
-                           height={40}
-                           className="object-contain"
-                        />
+                  <div className="mx-auto max-w-[1000px] py-8">
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="space-y-3">
+                           <img
+                              src="logo3.jpg"
+                              className="w-[100px]"
+                           />
+                        </div>
                      </div>
-                  </div> */}
+                  </div>
                </footer>
             </div>
          </body>
