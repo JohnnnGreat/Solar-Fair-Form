@@ -7,8 +7,8 @@ import Link from "next/link";
 import { Toaster } from "sonner";
 
 export const metadata = {
-   title: "Solar Fair Registration",
-   description: "Registration form for Solar Fair events",
+   title: "Virtual Power Plant Plan",
+   description: "Registration form for Virtual Power Plant Plan",
 };
 
 export default function RootLayout({ children }) {
@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
 
                {/* Footer */}
                <footer className="border-t bg-white">
-                  <div className="mx-auto max-w-[1000px] px-4 py-8">
+                  {/* <div className="mx-auto max-w-[1000px] px-4 py-8">
                      <div className="flex items-center justify-center md:justify-start">
                         <Image
                            src="/logo3.jpg"
@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
                            className="object-contain"
                         />
                      </div>
-                  </div>
+                  </div> */}
                </footer>
             </div>
          </body>

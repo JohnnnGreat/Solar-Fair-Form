@@ -205,7 +205,7 @@ export default function RegistrationsTable() {
             <div className="flex justify-between items-center">
                <div>
                   <CardTitle>Registrations</CardTitle>
-                  <CardDescription>Manage and view all Solar Fair registrations</CardDescription>
+                  {/* <CardDescription>Manage and view all Solar Fair registrations</CardDescription> */}
                </div>
                <Button
                   onClick={handleExport}

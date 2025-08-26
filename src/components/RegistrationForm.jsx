@@ -41,7 +41,7 @@ export default function RegistrationForm() {
    const validateForm = () => {
       const errors = [];
       if (!formData.organisationName.trim()) errors.push("Organization Name is required");
-      if (!formData.categorisation) errors.push("Category is required");
+      // if (!formData.categorisation) errors.push("Category is required");
 
       if (!formData.firstName.trim()) errors.push("First Name is required");
       if (!formData.lastName.trim()) errors.push("Last Name is required");
@@ -143,8 +143,10 @@ export default function RegistrationForm() {
                               required
                            />
                         </div>
-
-                        <div>
+                        {/* Personal Information Section
+                        
+                        
+                          <div>
                            <label
                               htmlFor="categorisation"
                               className="block text-sm font-medium text-gray-700 mb-2"
@@ -169,6 +171,7 @@ export default function RegistrationForm() {
                               ))}
                            </select>
                         </div>
+                        */}
                      </div>
                   </div>
                </div>
@@ -389,6 +392,7 @@ export default function RegistrationForm() {
                      <button
                         type="submit"
                         disabled={isSubmitting}
+                        onClick={handleSubmit}
                         className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                      >
                         {isSubmitting ? (

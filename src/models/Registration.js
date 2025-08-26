@@ -32,7 +32,7 @@ const RegistrationSchema = new mongoose.Schema({
    categorisation: {
       type: String,
       required: true,
-      enum: ["Customer", "Business", "Solar company", "Financiers", "Development Agency"],
+      enum: ["Customer", "Business", "Financiers", "Development Agency"],
    },
    registeredOnMarketplace: {
       type: Boolean,
