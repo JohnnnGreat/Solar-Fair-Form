@@ -24,6 +24,11 @@ const RegistrationSchema = new mongoose.Schema({
       type: String,
       enum: ["Male", "Female", "Prefer not to say"],
    },
+   age: {
+      type: String,
+      required: true,
+      enum: ["18 to 23", "24 to 35", "Above 35"],
+   },
    categorisation: {
       type: String,
       required: true,

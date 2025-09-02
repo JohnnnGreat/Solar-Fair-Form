@@ -40,6 +40,7 @@ export default function RegistrationForm() {
       firstName: "",
       lastName: "",
       gender: "",
+      age: "",
       categorisation: "",
       registeredOnMarketplace: null,
       interests: "",
@@ -92,6 +93,9 @@ export default function RegistrationForm() {
       if (!formData.gender) {
          errors.push("Gender is required");
       }
+      if (!formData.age) {
+         errors.push("Age is required");
+      }
       if (!formData.interests.trim()) {
          errors.push("Interests field is required");
       }
@@ -143,6 +147,7 @@ export default function RegistrationForm() {
             firstName: "",
             lastName: "",
             gender: "",
+            age: "",
             categorisation: "",
             registeredOnMarketplace: null,
             interests: "",
@@ -167,6 +172,9 @@ export default function RegistrationForm() {
 
    // Gender options
    const genderOptions = ["Male", "Female", "Prefer not to say"];
+
+   // Age options
+   const ageOptions = ["18 to 23", "24 to 35", "Above 35"];
 
    return (
       <Card className=" border shadow-none md:w-[800px]! ">
@@ -353,6 +361,31 @@ export default function RegistrationForm() {
                                  id={`gender-${option}`}
                               />
                               <Label htmlFor={`gender-${option}`}>{option}</Label>
+                           </div>
+                        ))}
+                     </RadioGroup>
+                  </div>
+
+                  <div className="grid gap-2">
+                     <Label>
+                        Age <span className="text-red-500">*</span>
+                     </Label>
+                     <RadioGroup
+                        value={formData.age}
+                        onValueChange={(value) => handleChange("age", value)}
+                        required
+                        className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-4"
+                     >
+                        {ageOptions.map((option) => (
+                           <div
+                              key={option}
+                              className="flex items-center space-x-2"
+                           >
+                              <RadioGroupItem
+                                 value={option}
+                                 id={`age-${option}`}
+                              />
+                              <Label htmlFor={`age-${option}`}>{option}</Label>
                            </div>
                         ))}
                      </RadioGroup>

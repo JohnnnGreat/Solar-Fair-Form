@@ -282,6 +282,7 @@ export default function RegistrationsTable() {
                         <TableHead>Organisation</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Age</TableHead>
                         <TableHead>Category</TableHead>
                         <TableHead>Marketplace</TableHead>
                         <TableHead>Date</TableHead>
@@ -292,11 +293,14 @@ export default function RegistrationsTable() {
                      {currentData.length > 0 ? (
                         currentData.map((registration) => (
                            <TableRow key={registration._id}>
-                              <TableCell className="font-medium">
+                              <TableCell className="font-medium max-w-[500px]! truncate  ">
                                  {registration.organisationName}
                               </TableCell>
                               <TableCell>{`${registration.firstName} ${registration.lastName}`}</TableCell>
                               <TableCell>{registration.email}</TableCell>
+                              <TableCell>
+                                 <Badge variant="secondary">{registration.age || "N/A"}</Badge>
+                              </TableCell>
                               <TableCell>
                                  <Badge variant="outline">{registration.categorisation}</Badge>
                               </TableCell>
@@ -357,7 +361,7 @@ export default function RegistrationsTable() {
                      ) : (
                         <TableRow>
                            <TableCell
-                              colSpan={7}
+                              colSpan={8}
                               className="text-center h-24"
                            >
                               No matching registrations found
