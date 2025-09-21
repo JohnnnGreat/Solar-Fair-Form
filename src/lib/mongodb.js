@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-
+// mongodb+srv://johnossai20:JohnOssai@cluster0.lopkml3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 // const MONGODB_URI =
 //   "mongodb+srv://johnossai20:ln9nyAjqMA8BPPCn@cluster0.xhamnzk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
+// mongodb+srv://johnossai20:JohnOssai@cluster0.lopkml3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 export const MONGODB_URI =
-   "mongodb+srv://johnossai20:JohnOssai@cluster0.xhamnzk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+   "mongodb+srv://johnossai20:JohnOssai@cluster0.lopkml3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 if (!MONGODB_URI) {
    throw new Error("Please define the MONGODB_URI environment variable");
@@ -25,6 +25,8 @@ async function connectDB() {
       const opts = {
          bufferCommands: false,
       };
+
+      console.log(MONGODB_URI);
 
       cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
          return mongoose;
